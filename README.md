@@ -8,7 +8,7 @@ REMOVE_FILE = True  //是否删除投稿后的视频文件
 LineN = "qn"  //线路，如cos、bda2、qn、ws、kodo
 DEFAULT_TID = 21
 PROXY = 'http://192.168.99.148:20171' //代理地址
-COOKIES_FROM_BROWSER = ("firefox",)
+COOKIES_FROM_BROWSER = ("firefox",) //请在windows系统上安装firefox并登陆youtube。如果是其他平台无法登陆，可以使用cookiefile参数或者空白
 URL_LIST_FILE = "url_list.json" //不用修改
 ```
 
