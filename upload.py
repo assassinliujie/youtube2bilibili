@@ -14,11 +14,11 @@ import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-OWNER_NAME = "username"
+OWNER_NAME = "连珏浩力"
 REMOVE_FILE = True  # 是否删除投稿后的视频文件
 LineN = "qn"  # 线路 cos bda2 qn ws kodo
 DEFAULT_TID = 21
-PROXY = 'http://192.168.99.148:20171'
+PROXY = 'http://127.0.0.1:20171'
 COOKIES_FROM_BROWSER = ("firefox",)
 URL_LIST_FILE = "url_list.json"
 
@@ -254,11 +254,51 @@ def mode_resume_upload():
                 entry["count"] += 1
             save_url_list(url_list)
 
+def mode_manual_playlist():
+    urls = []
+    while True:
+        url = input("请输入视频URL (输入'完毕'结束): ")
+        if url.lower() == '完毕':
+            break
+        urls.append({"url": url, "status": "no", "count": 0})
+
+    if not urls:
+        print("没有输入任何URL。")
+        return
+
+    save_url_list(urls)
+    
+    print("以下是需要上传的视频URL列表:")
+    for entry in urls:
+        print(entry["url"])
+
+    confirm = input("请确认以上URL是否正确 (yes/no): ")
+    if confirm.lower() != "yes":
+        print("操作已取消。")
+        return
+    
+    tid = input("请输入分区代码 (默认21): ")
+    if not tid:
+        tid = DEFAULT_TID
+    else:
+        tid = int(tid)
+    
+    for entry in urls:
+        if entry["status"] == "no":
+            for _ in range(2):  # 尝试2次
+                success = process_video(entry["url"], tid)
+                if success:
+                    entry["status"] = "yes"
+                    break
+                entry["count"] += 1
+            save_url_list(urls)
+
 def main():
     print("请选择模式:")
     print("1: 单视频上传模式")
     print("2: 视频列表或频道模式")
     print("3: 断点续传模式")
+    print("4: 手动输入多个单视频链接模式")
     mode = input("请输入模式编号: ")
     
     if mode == "1":
@@ -267,6 +307,8 @@ def main():
         mode_video_list()
     elif mode == "3":
         mode_resume_upload()
+    elif mode == "4":
+        mode_manual_playlist()
     else:
         print("无效的模式编号。")
 
