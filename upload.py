@@ -14,7 +14,7 @@ import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-OWNER_NAME = "连珏浩力"
+OWNER_NAME = "username"
 REMOVE_FILE = True  # 是否删除投稿后的视频文件
 LineN = "qn"  # 线路 cos bda2 qn ws kodo
 DEFAULT_TID = 21
